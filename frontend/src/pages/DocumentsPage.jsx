@@ -26,6 +26,19 @@ const getStatusIcon = (status) => {
   return icons[status] || "•";
 };
 
+const getStatusMessage = (status) => {
+  if (status === "completed") {
+    return "Ready for chat";
+  }
+  if (status === "processing") {
+    return "Processing in background...";
+  }
+  if (status === "failed") {
+    return "Processing failed";
+  }
+  return "Uploaded, waiting to process";
+};
+
 function DocumentsPage() {
   const navigate = useNavigate();
   const [documents, setDocuments] = useState([]);
@@ -56,6 +69,51 @@ function DocumentsPage() {
   useEffect(() => {
     loadDocuments();
   }, []);
+
+  useEffect(() => {
+    const hasPendingDocuments = documents.some(
+      (document) => document.processingStatus === "processing"
+    );
+
+    if (!hasPendingDocuments) {
+      return undefined;
+    }
+
+    const intervalId = window.setInterval(async () => {
+      try {
+        const refreshedDocuments = await Promise.all(
+          documents.map(async (document) => {
+            if (document.processingStatus !== "processing") {
+              return document;
+            }
+
+            const response = await fetch(
+              `${apiBaseUrl}/documents/${document._id}/status`,
+              {
+                credentials: "include",
+              }
+            );
+            const result = await response.json();
+
+            if (!response.ok) {
+              return document;
+            }
+
+            return {
+              ...document,
+              ...result.data,
+            };
+          })
+        );
+
+        setDocuments(refreshedDocuments);
+      } catch {
+        // Keep UI stable if a background status poll fails.
+      }
+    }, 4000);
+
+    return () => window.clearInterval(intervalId);
+  }, [documents]);
 
   const handleDelete = async (documentId) => {
     setDeletingId(documentId);
@@ -144,11 +202,14 @@ function DocumentsPage() {
                         : document.processingStatus === "failed"
                         ? "ui-badge-failed"
                         : "ui-badge-uploaded"
-                    }`}
+                    } ${document.processingStatus === "processing" ? "animate-pulse" : ""}`}
                   >
                     {getStatusIcon(document.processingStatus)} {document.processingStatus}
                   </span>
                 </div>
+                <p className="mt-2 text-sm font-semibold text-slate-800">
+                  Status: {getStatusMessage(document.processingStatus)}
+                </p>
 
                 <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                   <div className="ui-card-muted border border-white/80 bg-[#C3CC9B] text-center text-white">
