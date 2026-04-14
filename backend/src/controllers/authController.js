@@ -42,6 +42,10 @@ const register = asyncHandler(async (req, res) => {
     passwordHash,
   });
 
+  const token = createToken(user._id.toString());
+
+  res.cookie("token", token, getCookieOptions());
+
   res.status(201).json({
     success: true,
     message: "User registered successfully",

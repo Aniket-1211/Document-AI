@@ -48,13 +48,18 @@ function SignUpPage() {
         throw new Error(response.message || "Unable to create your account.");
       }
 
+      if (response?.data) {
+        localStorage.setItem("docAIUser", JSON.stringify(response.data));
+        window.dispatchEvent(new Event("auth-change"));
+      }
+
       toast.success(response.message || "Account created successfully.");
       setFormData({
         name: "",
         email: "",
         password: "",
       });
-      navigate("/signin");
+      navigate("/upload");
     } catch (error) {
       toast.error(error.message || "Unable to create your account.");
     } finally {
