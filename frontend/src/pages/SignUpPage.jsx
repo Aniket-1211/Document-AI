@@ -48,8 +48,29 @@ function SignUpPage() {
         throw new Error(response.message || "Unable to create your account.");
       }
 
-      if (response?.data) {
-        localStorage.setItem("docAIUser", JSON.stringify(response.data));
+      // Explicitly log in after signup to guarantee auth cookie + user session.
+      const loginResponse = await fetch(`${apiBaseUrl}/auth/login`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email.trim(),
+          password: formData.password,
+        }),
+      });
+      const loginResult = await loginResponse.json();
+
+      if (!loginResponse.ok) {
+        throw new Error(
+          loginResult.message ||
+            "Account created, but auto-login failed. Please sign in."
+        );
+      }
+
+      if (loginResult?.data) {
+        localStorage.setItem("docAIUser", JSON.stringify(loginResult.data));
         window.dispatchEvent(new Event("auth-change"));
       }
 
