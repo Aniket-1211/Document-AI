@@ -123,7 +123,7 @@ function DocumentsPage() {
             {filteredDocuments.map((document) => (
               <article
                 key={document._id}
-                className="ui-card border-[#A8B383] bg-[#C3CC9B] p-5 sm:p-6"
+                className="ui-card border-[#7D8F62] bg-[#99AD7A] p-5 sm:p-6"
               >
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div>
