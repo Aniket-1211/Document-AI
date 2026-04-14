@@ -69,10 +69,14 @@ function SignUpPage() {
         );
       }
 
-      if (loginResult?.data) {
-        localStorage.setItem("docAIUser", JSON.stringify(loginResult.data));
-        window.dispatchEvent(new Event("auth-change"));
+      const userForSession = loginResult?.data || response?.data;
+
+      if (!userForSession) {
+        throw new Error("Signup succeeded, but user session data was missing.");
       }
+
+      localStorage.setItem("docAIUser", JSON.stringify(userForSession));
+      window.dispatchEvent(new Event("auth-change"));
 
       toast.success(response.message || "Account created successfully.");
       setFormData({
