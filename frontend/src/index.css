@@ -1,0 +1,128 @@
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Instrument Sans", sans-serif;
+  --font-serif: "Fraunces", serif;
+}
+
+:root {
+  font-family: var(--font-sans);
+  --ui-bg: #f8fafc;
+  --ui-bg-soft: #eef2ff;
+  --ui-surface: #ffffff;
+  --ui-surface-muted: #f8fafc;
+  --ui-border: #dbe2ef;
+  --ui-text: #0f172a;
+  --ui-text-muted: #475569;
+  --ui-primary: #2563eb;
+  --ui-primary-strong: #1d4ed8;
+  --ui-danger: #dc2626;
+  color: var(--ui-text);
+  background: var(--ui-bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+@layer components {
+  .ui-page {
+    @apply relative min-h-[calc(100vh-82px)] overflow-hidden bg-[linear-gradient(180deg,#f8fafc_0%,#eef2ff_45%,#ffffff_100%)];
+  }
+
+  .ui-page-glow {
+    @apply absolute inset-x-0 top-0 -z-10 h-80 bg-[radial-gradient(circle_at_top_left,rgba(37,99,235,0.16),transparent_36%),radial-gradient(circle_at_top_right,rgba(14,165,233,0.14),transparent_36%)];
+  }
+
+  .ui-container {
+    @apply mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-10 lg:py-12;
+  }
+
+  .ui-title {
+    @apply font-serif text-4xl text-slate-950 sm:text-5xl;
+  }
+
+  .ui-subtitle {
+    @apply mt-3 text-sm text-slate-600 sm:text-base;
+  }
+
+  .ui-card {
+    @apply rounded-[1.75rem] border border-slate-200/80 bg-white/90 p-6 shadow-xl shadow-slate-900/8 backdrop-blur-xl sm:p-8;
+  }
+
+  .ui-card-muted {
+    @apply rounded-2xl border border-slate-200 bg-slate-50/90 p-4;
+  }
+
+  .ui-input {
+    @apply w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100;
+  }
+
+  .ui-textarea {
+    @apply w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100;
+  }
+
+  .ui-btn {
+    @apply inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-70;
+  }
+
+  .ui-btn-primary {
+    @apply inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold transition bg-sky-600 text-white shadow-lg shadow-sky-700/20 hover:bg-sky-500 disabled:cursor-not-allowed disabled:opacity-70;
+  }
+
+  .ui-btn-secondary {
+    @apply inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold transition border border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:text-slate-950 disabled:cursor-not-allowed disabled:opacity-70;
+  }
+
+  .ui-btn-danger {
+    @apply inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold transition border border-red-200 bg-red-50 text-red-700 hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-70;
+  }
+
+  .ui-badge {
+    @apply rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em];
+  }
+
+  .ui-badge-completed {
+    @apply bg-emerald-100 text-emerald-700;
+  }
+
+  .ui-badge-processing {
+    @apply bg-amber-100 text-amber-700;
+  }
+
+  .ui-badge-failed {
+    @apply bg-red-100 text-red-700;
+  }
+
+  .ui-badge-uploaded {
+    @apply bg-sky-100 text-sky-700;
+  }
+}
